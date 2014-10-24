@@ -1,9 +1,16 @@
 package muntaserahmed.wifisentry;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.net.wifi.ScanResult;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import java.util.ArrayList;
 
 
 public class DashboardActivity extends Activity {
@@ -12,6 +19,18 @@ public class DashboardActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+
+        WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+
+        boolean scanSuccess = wifiManager.startScan();
+        ArrayList<ScanResult> scanResults = (ArrayList) wifiManager.getScanResults();
+
+        if (scanSuccess) {
+            for (ScanResult sr : scanResults) {
+                Log.d("RESULT: ", sr.SSID);
+            }
+        }
+        else { Log.d("SCAN RESULT: ", "FAILED"); }
     }
 
 
@@ -31,6 +50,13 @@ public class DashboardActivity extends Activity {
         if (id == R.id.action_settings) {
             return true;
         }
+        else if (id == R.id.action_server) {
+            Intent intent = new Intent(this, ServerActivity.class);
+            startActivity(intent);
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
+
+
 }
