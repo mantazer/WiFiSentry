@@ -2,22 +2,34 @@ package muntaserahmed.wifisentry;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.loopj.android.http.JsonHttpResponseHandler;
+
+import org.apache.http.Header;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class ServerActivity extends Activity {
 
     EditText serverUrl;
+    Button sendButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_server);
 
-        serverUrl = (EditText) findViewById(R.id.serverUrl);
-        
+        serverUrl = (EditText) findViewById(R.id.server_url);
+        sendButton = (Button) findViewById(R.id.send_button);
+
     }
 
 
@@ -39,4 +51,35 @@ public class ServerActivity extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    public void onSendBtnClicked(View v) {
+        if(v.getId() == R.id.send_button) {
+
+            try {
+                sendLightInstructions();
+                Toast.makeText(getApplicationContext(), "sent", Toast.LENGTH_SHORT).show();
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    // add parameter handling
+    public void sendLightInstructions() throws JSONException {
+        // pass in values from server edittext
+        RestClient.get("10.0.1.56", "test", null, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                // If response is JSONObject instead of JSONArray
+                Log.d("RESPONSE", "OBJECT");
+
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                Log.d("RESPONSE", "ARRAY");
+            }
+        });
+    }
+
 }
