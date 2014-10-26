@@ -11,7 +11,17 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/serverUrl"
+        android:id="@+id/server_url"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="send"
+        android:id="@+id/send_button"
+        android:layout_alignBottom="@+id/server_url"
+        android:layout_toEndOf="@+id/server_url"
+        android:onClick="onSendBtnClicked"/>
 </RelativeLayout>
