@@ -5,6 +5,7 @@ import com.loopj.android.http.*;
 /**
  * Created by muntaserahmed on 10/26/14.
  */
+
 public class RestClient {
 
     private static final String PROTOCOL = "http";
@@ -22,7 +23,7 @@ public class RestClient {
 
     private static String getAbsoluteUrl(String host, String endpoint) {
 //        return PROTOCOL + "://" + host + Integer.toString(PORT) + "/" + endpoint;
-        return "http://www.reddit.com/.json";
+        return "http://postcatcher.in/catchers/5451ab0a42bfb30200000c33";
     }
 
 }

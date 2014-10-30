@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
@@ -66,18 +67,23 @@ public class ServerActivity extends Activity {
 
     // add parameter handling
     public void sendLightInstructions() throws JSONException {
+
+        RequestParams requestParams = new RequestParams();
+        requestParams.put("lightid", "1");
+
         // pass in values from server edittext
-        RestClient.get("10.0.1.56", "test", null, new JsonHttpResponseHandler() {
+        RestClient.post("10.0.1.56", "test", requestParams, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 // If response is JSONObject instead of JSONArray
                 Log.d("RESPONSE", "OBJECT");
-
+                Toast.makeText(getApplicationContext(), "JSONObject", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 Log.d("RESPONSE", "ARRAY");
+                Toast.makeText(getApplicationContext(), "JSONArray", Toast.LENGTH_SHORT).show();
             }
         });
     }
