@@ -14,9 +14,14 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import org.apache.http.Header;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.message.BasicHeader;
+import org.apache.http.protocol.HTTP;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
 
 public class ServerActivity extends Activity {
 
@@ -68,11 +73,23 @@ public class ServerActivity extends Activity {
     // add parameter handling
     public void sendLightInstructions() throws JSONException {
 
-        RequestParams requestParams = new RequestParams();
-        requestParams.put("lightid", "1");
+        JSONObject mainObj = new JSONObject();
+        JSONArray lightArray = new JSONArray();
+        JSONObject lightObject = new JSONObject();
 
+        lightObject.put("lightId", "1");
+        lightObject.put("red", "1");
+        lightObject.put("blue", "1");
+        lightObject.put("green", "1");
+        lightObject.put("intensity", "1");
+
+        lightArray.put(lightObject);
+
+        mainObj.put("lights", lightArray);
+        mainObj.put("propagate", "true");
+        
         // pass in values from server edittext
-        RestClient.post("10.0.1.56", "test", requestParams, new JsonHttpResponseHandler() {
+        RestClient.post("10.0.1.56", "test", null, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 // If response is JSONObject instead of JSONArray
