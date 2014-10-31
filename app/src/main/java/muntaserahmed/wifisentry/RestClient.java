@@ -1,16 +1,8 @@
 package muntaserahmed.wifisentry;
 
 import android.content.Context;
-
 import com.loopj.android.http.*;
-
 import org.apache.http.HttpEntity;
-
-import java.net.ContentHandler;
-
-/**
- * Created by muntaserahmed on 10/26/14.
- */
 
 public class RestClient {
 
@@ -23,18 +15,14 @@ public class RestClient {
         client.get(getAbsoluteUrl(host, endpoint), params, responseHandler);
     }
 
-//    public static void post(String host, String endpoint, RequestParams params, AsyncHttpResponseHandler responseHandler) {
-//        client.post(getAbsoluteUrl(host, endpoint), params, responseHandler);
-//    }
-
     public static void post(Context context, String host, String endpoint, HttpEntity entity,
                             String contentType, AsyncHttpResponseHandler responseHandler) {
         client.post(context, getAbsoluteUrl(host, endpoint), entity, contentType, responseHandler);
     }
 
     private static String getAbsoluteUrl(String host, String endpoint) {
-//        return PROTOCOL + "://" + host + Integer.toString(PORT) + "/" + endpoint;
-        return "http://postcatcher.in/catchers/545259903a57d0020000238c";
+//        return PROTOCOL + "://" + host + ":" + Integer.toString(PORT) + "/" + endpoint;
+        return "http://postcatcher.in/catchers/5453032c3a57d00200003867";
     }
 
 }
