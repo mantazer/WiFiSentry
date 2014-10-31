@@ -22,7 +22,7 @@ public class RestClient {
 
     private static String getAbsoluteUrl(String host, String endpoint) {
 //        return PROTOCOL + "://" + host + ":" + Integer.toString(PORT) + "/" + endpoint;
-        return "http://postcatcher.in/catchers/5453032c3a57d00200003867";
+        return "http://postcatcher.in/catchers/545405ee48e70e0200000761";
     }
 
 }
