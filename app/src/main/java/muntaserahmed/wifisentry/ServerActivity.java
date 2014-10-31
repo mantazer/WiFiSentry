@@ -11,7 +11,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 
 import org.apache.http.Header;
 import org.apache.http.entity.StringEntity;
@@ -35,9 +34,7 @@ public class ServerActivity extends Activity {
 
         serverUrl = (EditText) findViewById(R.id.server_url);
         sendButton = (Button) findViewById(R.id.send_button);
-
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -59,19 +56,17 @@ public class ServerActivity extends Activity {
     }
 
     public void onSendBtnClicked(View v) {
+        String baseUrl = serverUrl.getText().toString();
         if(v.getId() == R.id.send_button) {
-
             try {
-                sendLightInstructions();
-                Toast.makeText(getApplicationContext(), "sent", Toast.LENGTH_SHORT).show();
+                sendLightInstructions(baseUrl);
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
         }
     }
 
-    // add parameter handling
-    public void sendLightInstructions() throws JSONException {
+    public void sendLightInstructions(String baseUrl) throws JSONException {
 
         // Testing
         JSONObject mainObj = new JSONObject();
@@ -94,22 +89,19 @@ public class ServerActivity extends Activity {
             jsonEntity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
 
             // pass in values from server edittext
-            RestClient.post(getApplicationContext(), "10.0.1.56", "test", jsonEntity, "application/json", new JsonHttpResponseHandler() {
+            RestClient.post(getApplicationContext(), baseUrl, "test", jsonEntity, "application/json", new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                    // If response is JSONObject instead of JSONArray
-                    Log.d("RESPONSE", "OBJECT");
                     Toast.makeText(getApplicationContext(), "JSONObject", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                    Log.d("RESPONSE", "ARRAY");
                     Toast.makeText(getApplicationContext(), "JSONArray", Toast.LENGTH_SHORT).show();
                 }
             });
         } catch (UnsupportedEncodingException e) {
-            Log.d("EXCEPTION", "ENCODING");
+            Log.d("EXCEPTION:", "ENCODING");
         }
     }
 
