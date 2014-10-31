@@ -24,6 +24,11 @@ import java.io.UnsupportedEncodingException;
 
 public class ServerActivity extends Activity {
 
+    EditText redValText;
+    EditText greenValText;
+    EditText blueValText;
+    EditText intensityValText;
+
     EditText serverUrl;
     Button sendButton;
 
@@ -34,6 +39,11 @@ public class ServerActivity extends Activity {
 
         serverUrl = (EditText) findViewById(R.id.server_url);
         sendButton = (Button) findViewById(R.id.send_button);
+
+        redValText = (EditText) findViewById(R.id.red_edit);
+        greenValText = (EditText) findViewById(R.id.green_edit);
+        blueValText = (EditText) findViewById(R.id.blue_edit);
+        intensityValText = (EditText) findViewById(R.id.intensity_edit);
     }
 
     @Override
@@ -68,21 +78,20 @@ public class ServerActivity extends Activity {
 
     public void sendLightInstructions(String baseUrl) throws JSONException {
 
-        // Testing
         JSONObject mainObj = new JSONObject();
         JSONArray lightArray = new JSONArray();
         JSONObject lightObject = new JSONObject();
 
-        lightObject.put("lightId", "1");
-        lightObject.put("red", "1");
-        lightObject.put("blue", "1");
-        lightObject.put("green", "1");
-        lightObject.put("intensity", "1");
+        lightObject.put("lightId", 1);
+        lightObject.put("red", Integer.parseInt(redValText.getText().toString()));
+        lightObject.put("green", Integer.parseInt(greenValText.getText().toString()));
+        lightObject.put("blue", Integer.parseInt(blueValText.getText().toString()));
+        lightObject.put("intensity", Integer.parseInt(intensityValText.getText().toString()));
 
         lightArray.put(lightObject);
 
         mainObj.put("lights", lightArray);
-        mainObj.put("propagate", "true");
+        mainObj.put("propagate", true);
 
         try {
             StringEntity jsonEntity = new StringEntity(mainObj.toString());
@@ -100,6 +109,9 @@ public class ServerActivity extends Activity {
                     Toast.makeText(getApplicationContext(), "JSONArray", Toast.LENGTH_SHORT).show();
                 }
             });
+
+            Toast.makeText(getApplicationContext(), "Sent", Toast.LENGTH_SHORT).show();
+
         } catch (UnsupportedEncodingException e) {
             Log.d("EXCEPTION:", "ENCODING");
         }
