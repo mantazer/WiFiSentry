@@ -20,6 +20,9 @@ public class DashboardActivity extends Activity {
     WifiManager wifiManager;
     ArrayList<ScanResult> scanResults;
 
+    SortSSID sortBySSID = new SortSSID();
+    SortLevel sortByLevel = new SortLevel();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +30,11 @@ public class DashboardActivity extends Activity {
 
         wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
         scanResults = scan();
+
+        for (ScanResult sr : scanResults) {
+            Toast.makeText(getApplicationContext(), sr.SSID + ", " + sr.level, Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     @Override
@@ -57,14 +65,8 @@ public class DashboardActivity extends Activity {
         boolean scanSuccess = wifiManager.startScan();
         if (scanSuccess) {
             ArrayList<ScanResult> scanResults = (ArrayList) wifiManager.getScanResults();
-            SortScanResults sort = new SortScanResults();
-            Collections.sort(scanResults, sort);
-
-//            for (ScanResult sr : scanResults) {
-//                Toast.makeText(getApplicationContext(), sr.SSID, Toast.LENGTH_SHORT).show();
-//            }
-
-            return scanResults;
+            ArrayList<ScanResult> sanitizedResults = sanitizeResults(scanResults);
+            return sanitizedResults;
         }
         else {
             Log.d("EXCEPTION: ", "SCAN FAILED");
@@ -72,5 +74,23 @@ public class DashboardActivity extends Activity {
         }
     }
 
+    public ArrayList<ScanResult> sanitizeResults(ArrayList<ScanResult> scanResults) {
+
+        Collections.sort(scanResults, sortBySSID);
+
+        if (scanResults.get(0).SSID == "" || scanResults.get(0).SSID == null) {
+            scanResults.remove(0);
+        }
+
+        for (int i = 1; i < scanResults.size(); i++) {
+            if ((scanResults.get(i).SSID.equals(scanResults.get(i - 1).SSID)) ||
+                    (scanResults.get(0).SSID == "" || scanResults.get(0).SSID == null)) {
+                scanResults.remove(i);
+            }
+        }
+
+        Collections.sort(scanResults, sortByLevel);
+        return scanResults;
+    }
 
 }
