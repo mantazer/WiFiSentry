@@ -9,30 +9,25 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 
 public class DashboardActivity extends Activity {
+
+    WifiManager wifiManager;
+    ArrayList<ScanResult> scanResults;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
-        WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-
-        boolean scanSuccess = wifiManager.startScan();
-        ArrayList<ScanResult> scanResults = (ArrayList) wifiManager.getScanResults();
-
-        if (scanSuccess) {
-            for (ScanResult sr : scanResults) {
-                Log.d("RESULT: ", sr.SSID);
-            }
-        }
-        else { Log.d("SCAN RESULT: ", "FAILED"); }
+        wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        scanResults = scan();
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -56,6 +51,25 @@ public class DashboardActivity extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public ArrayList<ScanResult> scan() throws IllegalStateException {
+        boolean scanSuccess = wifiManager.startScan();
+        if (scanSuccess) {
+            ArrayList<ScanResult> scanResults = (ArrayList) wifiManager.getScanResults();
+            SortScanResults sort = new SortScanResults();
+            Collections.sort(scanResults, sort);
+
+//            for (ScanResult sr : scanResults) {
+//                Toast.makeText(getApplicationContext(), sr.SSID, Toast.LENGTH_SHORT).show();
+//            }
+
+            return scanResults;
+        }
+        else {
+            Log.d("EXCEPTION: ", "SCAN FAILED");
+            throw new IllegalStateException();
+        }
     }
 
 
