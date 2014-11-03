@@ -2,6 +2,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".DashboardActivity" >
 
+    <item android:id="@+id/action_refresh"
+        android:icon="@drawable/ic_action_refresh"
+        android:title="@string/app_name"
+        android:showAsAction="ifRoom"  />
+
     <item android:id="@+id/action_server"
         android:title="@string/action_server"
         android:orderInCategory="100"
