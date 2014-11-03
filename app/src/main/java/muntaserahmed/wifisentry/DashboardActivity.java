@@ -11,7 +11,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,6 +26,8 @@ public class DashboardActivity extends Activity {
     SortSSID sortBySSID = new SortSSID();
     SortLevel sortByLevel = new SortLevel();
 
+    ArrayAdapter<CustomScanResult> arrayAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,15 +36,8 @@ public class DashboardActivity extends Activity {
         scanListView = (ListView) findViewById(R.id.scanListView);
 
         wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-        scanResults = scan();
 
-        ArrayAdapter<CustomScanResult> arrayAdapter = new ArrayAdapter<CustomScanResult>(
-                this,
-                android.R.layout.simple_list_item_1,
-                scanResults
-        );
-
-        scanListView.setAdapter(arrayAdapter);
+        refresh();
 
     }
 
@@ -109,6 +103,16 @@ public class DashboardActivity extends Activity {
         Collections.sort(customScanResults, sortByLevel);
 
         return customScanResults;
+    }
+
+    public void refresh() {
+        scanResults = scan();
+        arrayAdapter = new ArrayAdapter<CustomScanResult>(
+                this,
+                android.R.layout.simple_list_item_1,
+                scanResults
+        );
+        scanListView.setAdapter(arrayAdapter);
     }
 
 }
