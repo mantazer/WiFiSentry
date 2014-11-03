@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 
 
 public class DashboardActivity extends Activity {
@@ -24,7 +25,6 @@ public class DashboardActivity extends Activity {
     WifiManager wifiManager;
     ArrayList<CustomScanResult> scanResults;
 
-    SortSSID sortBySSID = new SortSSID();
     SortLevel sortByLevel = new SortLevel();
 
     ArrayAdapter<CustomScanResult> arrayAdapter;
@@ -86,24 +86,18 @@ public class DashboardActivity extends Activity {
 
         ArrayList<CustomScanResult> customScanResults = new ArrayList<CustomScanResult>();
 
-        Collections.sort(scanResults, sortBySSID);
-
-        if (scanResults.get(0).SSID == "" || scanResults.get(0).SSID == null) {
-            scanResults.remove(0);
-        }
-
-        for (int i = 1; i < scanResults.size(); i++) {
-            if ((scanResults.get(i).SSID.equals(scanResults.get(i - 1).SSID)) ||
-                    (scanResults.get(0).SSID == "" || scanResults.get(0).SSID == null)) {
-                scanResults.remove(i);
+        for (ScanResult sr : scanResults) {
+            CustomScanResult csr = new CustomScanResult(sr.SSID, sr.level);
+            if (!csr.SSID.equals("")) {
+                customScanResults.add(csr);
             }
         }
 
-        for (ScanResult sr : scanResults) {
-            CustomScanResult csr = new CustomScanResult(sr.SSID, sr.level);
-            customScanResults.add(csr);
-        }
+        HashSet noDupes = new HashSet();
+        noDupes.addAll(customScanResults);
+        customScanResults.clear();
 
+        customScanResults.addAll(noDupes);
         Collections.sort(customScanResults, sortByLevel);
 
         return customScanResults;
@@ -111,6 +105,7 @@ public class DashboardActivity extends Activity {
 
     public void refresh() {
         scanResults = scan();
+
         arrayAdapter = new ArrayAdapter<CustomScanResult>(
                 this,
                 android.R.layout.simple_list_item_1,
