@@ -98,7 +98,7 @@ public class ServerActivity extends Activity {
             jsonEntity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
 
             // pass in values from server edittext
-            RestClient.post(getApplicationContext(), baseUrl, "test", jsonEntity, "application/json", new JsonHttpResponseHandler() {
+            RestClient.post(getApplicationContext(), baseUrl, "rpi", jsonEntity, "application/json", new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     Toast.makeText(getApplicationContext(), "JSONObject", Toast.LENGTH_SHORT).show();
