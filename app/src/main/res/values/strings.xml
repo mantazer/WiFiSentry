@@ -14,7 +14,7 @@
     <string name="intensity_hint">Intensity value</string>
 
     <string name="test_text">Test Your Server!</string>
-    <string name="server_url_hint">Server URL</string>
+    <string name="server_url_hint">Server IP</string>
     <string name="send_text">Send</string>
 
 </resources>

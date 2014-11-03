@@ -1,6 +1,9 @@
 package muntaserahmed.wifisentry;
 
 import android.content.Context;
+import android.util.Log;
+import android.widget.Toast;
+
 import com.loopj.android.http.*;
 import org.apache.http.HttpEntity;
 
@@ -21,8 +24,9 @@ public class RestClient {
     }
 
     private static String getAbsoluteUrl(String host, String endpoint) {
-//        return PROTOCOL + "://" + host + ":" + Integer.toString(PORT) + "/" + endpoint;
-        return "http://postcatcher.in/catchers/545405ee48e70e0200000761";
+        Log.d("URL: ", PROTOCOL + "://" + host + "/" + endpoint);
+        return PROTOCOL + "://" + host + "/" + endpoint;
+//        return "http://postcatcher.in/catchers/545405ee48e70e0200000761";
     }
 
 }
