@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -17,8 +19,10 @@ import java.util.Collections;
 
 public class DashboardActivity extends Activity {
 
+    ListView scanListView;
+
     WifiManager wifiManager;
-    ArrayList<ScanResult> scanResults;
+    ArrayList<CustomScanResult> scanResults;
 
     SortSSID sortBySSID = new SortSSID();
     SortLevel sortByLevel = new SortLevel();
@@ -28,12 +32,18 @@ public class DashboardActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
+        scanListView = (ListView) findViewById(R.id.scanListView);
+
         wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
         scanResults = scan();
 
-        for (ScanResult sr : scanResults) {
-            Toast.makeText(getApplicationContext(), sr.SSID + ", " + sr.level, Toast.LENGTH_SHORT).show();
-        }
+        ArrayAdapter<CustomScanResult> arrayAdapter = new ArrayAdapter<CustomScanResult>(
+                this,
+                android.R.layout.simple_list_item_1,
+                scanResults
+        );
+
+        scanListView.setAdapter(arrayAdapter);
 
     }
 
@@ -61,11 +71,11 @@ public class DashboardActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    public ArrayList<ScanResult> scan() throws IllegalStateException {
+    public ArrayList<CustomScanResult> scan() throws IllegalStateException {
         boolean scanSuccess = wifiManager.startScan();
         if (scanSuccess) {
             ArrayList<ScanResult> scanResults = (ArrayList) wifiManager.getScanResults();
-            ArrayList<ScanResult> sanitizedResults = sanitizeResults(scanResults);
+            ArrayList<CustomScanResult> sanitizedResults = sanitizeResults(scanResults);
             return sanitizedResults;
         }
         else {
@@ -74,7 +84,9 @@ public class DashboardActivity extends Activity {
         }
     }
 
-    public ArrayList<ScanResult> sanitizeResults(ArrayList<ScanResult> scanResults) {
+    public ArrayList<CustomScanResult> sanitizeResults(ArrayList<ScanResult> scanResults) {
+
+        ArrayList<CustomScanResult> customScanResults = new ArrayList<CustomScanResult>();
 
         Collections.sort(scanResults, sortBySSID);
 
@@ -89,8 +101,14 @@ public class DashboardActivity extends Activity {
             }
         }
 
-        Collections.sort(scanResults, sortByLevel);
-        return scanResults;
+        for (ScanResult sr : scanResults) {
+            CustomScanResult csr = new CustomScanResult(sr.SSID, sr.level);
+            customScanResults.add(csr);
+        }
+
+        Collections.sort(customScanResults, sortByLevel);
+
+        return customScanResults;
     }
 
 }
