@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="clouds" type="color">#ecf0f1</item>
+    <item name="turquoise" type="color">#1abc9c</item>
+    <item name="whitesmoke" type="color">#f6f6ef</item>
+</resources>

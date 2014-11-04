@@ -33,10 +33,8 @@ public class CustomScanResult {
         this.level = level;
     }
 
-
-
     public String toString() {
-        return "SSID: " + this.SSID + " Strength: " + this.level;
+        return this.SSID + ": " + this.level;
     }
 
 }
