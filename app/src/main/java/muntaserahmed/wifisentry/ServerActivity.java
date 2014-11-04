@@ -86,7 +86,7 @@ public class ServerActivity extends Activity {
         lightObject.put("red", Integer.parseInt(redValText.getText().toString()));
         lightObject.put("green", Integer.parseInt(greenValText.getText().toString()));
         lightObject.put("blue", Integer.parseInt(blueValText.getText().toString()));
-        lightObject.put("intensity", Integer.parseInt(intensityValText.getText().toString()));
+        lightObject.put("intensity", Double.parseDouble(intensityValText.getText().toString()));
 
         lightArray.put(lightObject);
 
