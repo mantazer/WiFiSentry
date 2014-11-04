@@ -1,8 +1,11 @@
 package muntaserahmed.wifisentry;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -19,6 +22,8 @@ import java.util.HashSet;
 
 public class DashboardActivity extends Activity {
 
+
+    ActionBar actionBar;
     ListView scanListView;
 
     WifiManager wifiManager;
@@ -34,9 +39,7 @@ public class DashboardActivity extends Activity {
         setContentView(R.layout.activity_dashboard);
 
         scanListView = (ListView) findViewById(R.id.scanListView);
-
         wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-
         refresh();
 
     }

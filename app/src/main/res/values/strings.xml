@@ -6,7 +6,7 @@
     <string name="action_settings">Settings</string>
     <string name="action_server">Add Server</string>
 
-    <string name="title_activity_server">ServerActivity</string>
+    <string name="title_activity_server">Add Server</string>
 
     <string name="red_hint">Red value</string>
     <string name="blue_hint">Blue value</string>

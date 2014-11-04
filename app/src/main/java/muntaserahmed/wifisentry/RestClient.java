@@ -26,7 +26,6 @@ public class RestClient {
     private static String getAbsoluteUrl(String host, String endpoint) {
         Log.d("URL: ", PROTOCOL + "://" + host + "/" + endpoint);
         return PROTOCOL + "://" + host + "/" + endpoint;
-//        return "http://postcatcher.in/catchers/545405ee48e70e0200000761";
     }
 
 }
