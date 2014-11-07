@@ -15,6 +15,6 @@
 
     <string name="test_text">Test Your Server!</string>
     <string name="server_url_hint">Server IP</string>
-    <string name="send_text">Send</string>
+    <string name="save_text">Save</string>
 
 </resources>
