@@ -14,7 +14,8 @@
         android:layout_height="350dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:id="@+id/linearLayout2">
+        android:id="@+id/linearLayout2"
+        android:layout_alignParentLeft="true">
 
         <EditText
             android:layout_width="match_parent"
@@ -57,28 +58,32 @@
         android:layout_height="fill_parent"
         android:layout_below="@+id/linearLayout2"
         android:layout_alignParentStart="true"
-        android:id="@+id/relativeFooter">
+        android:id="@+id/relativeFooter"
+        android:layout_alignParentLeft="true">
 
         <EditText
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:id="@+id/server_url"
-            android:layout_toStartOf="@+id/send_button"
+            android:layout_toStartOf="@+id/save_button"
+            android:layout_toLeftOf="@id/save_button"
             android:layout_gravity="center_horizontal"
             android:hint="@string/server_url_hint"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true" />
 
         <Button
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/send_text"
-            android:id="@+id/send_button"
-            android:onClick="onSendBtnClicked"
+            android:text="@string/save_text"
+            android:id="@+id/save_button"
+            android:onClick="onSaveBtnClicked"
             android:layout_gravity="right"
             android:layout_alignBottom="@+id/server_url"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true" />
 
         <TextView
             android:layout_width="wrap_content"

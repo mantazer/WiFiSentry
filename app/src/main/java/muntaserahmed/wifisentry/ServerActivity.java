@@ -1,6 +1,7 @@
 package muntaserahmed.wifisentry;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -24,6 +25,11 @@ import java.io.UnsupportedEncodingException;
 
 public class ServerActivity extends Activity {
 
+    public static final String SERVER_PREFERENCES = "savedServer";
+
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
+
     EditText redValText;
     EditText greenValText;
     EditText blueValText;
@@ -37,8 +43,16 @@ public class ServerActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_server);
 
+
+        preferences = getSharedPreferences(SERVER_PREFERENCES, MODE_PRIVATE);
+        editor = preferences.edit();
+
+
+        Toast.makeText(getApplicationContext(), preferences.getString("serverIp", "Please add a server"), Toast.LENGTH_SHORT).show();
+
+
         serverUrl = (EditText) findViewById(R.id.server_url);
-        sendButton = (Button) findViewById(R.id.send_button);
+        sendButton = (Button) findViewById(R.id.save_button);
 
         redValText = (EditText) findViewById(R.id.red_edit);
         greenValText = (EditText) findViewById(R.id.green_edit);
@@ -65,9 +79,16 @@ public class ServerActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void onSaveBtnClicked(View v) {
+        String ip = serverUrl.getText().toString();
+        editor.putString("serverIp", ip);
+        editor.commit();
+        Toast.makeText(getApplicationContext(), "Server Saved", Toast.LENGTH_SHORT).show();
+    }
+
     public void onSendBtnClicked(View v) {
         String baseUrl = serverUrl.getText().toString();
-        if(v.getId() == R.id.send_button) {
+        if(v.getId() == R.id.save_button) {
             try {
                 sendLightInstructions(baseUrl);
             } catch (JSONException e) {
