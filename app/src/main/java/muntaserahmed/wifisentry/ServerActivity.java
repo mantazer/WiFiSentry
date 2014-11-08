@@ -97,19 +97,19 @@ public class ServerActivity extends Activity {
 
         switch (v.getId()) {
             case R.id.redButton:
-                lightObject.put("red", 255);
-                lightObject.put("green", 0);
-                lightObject.put("blue", 0);
+                lightObject.put("red", 231);
+                lightObject.put("green", 76);
+                lightObject.put("blue", 60);
                 break;
             case R.id.greenButton:
-                lightObject.put("red", 0);
-                lightObject.put("green", 255);
-                lightObject.put("blue", 0);
+                lightObject.put("red", 46);
+                lightObject.put("green", 204);
+                lightObject.put("blue",113);
                 break;
             case R.id.blueButton:
-                lightObject.put("red", 0);
-                lightObject.put("green", 0);
-                lightObject.put("blue", 255);
+                lightObject.put("red", 52);
+                lightObject.put("green", 152);
+                lightObject.put("blue", 219);
                 break;
             default:
                 lightObject.put("red", 255);
