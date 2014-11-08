@@ -8,12 +8,11 @@
 
     <string name="title_activity_server">Add Server</string>
 
-    <string name="red_hint">Red value</string>
-    <string name="blue_hint">Blue value</string>
-    <string name="green_hint">Green value</string>
-    <string name="intensity_hint">Intensity value</string>
+    <string name="red_hint">Red</string>
+    <string name="green_hint">Green</string>
+    <string name="blue_hint">Blue</string>
 
-    <string name="test_text">Test Your Server!</string>
+    <string name="add_text">Add Server</string>
     <string name="server_url_hint">Server IP</string>
     <string name="save_text">Save</string>
 
