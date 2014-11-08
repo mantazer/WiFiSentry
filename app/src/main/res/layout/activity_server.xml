@@ -61,13 +61,26 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/test_text"
+            android:id="@+id/test_text"
+            android:layout_alignTop="@+id/LinearButtons"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp" />
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/red_hint"
             android:id="@+id/redButton"
             android:layout_gravity="center_horizontal"
-            android:onClick="onTestBtnClicked" />
+            android:layout_margin="10dp"
+            android:onClick="onTestBtnClicked"
+            android:background="@drawable/redbutton_style" />
 
         <Button
             android:layout_width="wrap_content"
@@ -75,7 +88,9 @@
             android:text="@string/green_hint"
             android:id="@+id/greenButton"
             android:layout_gravity="center_horizontal"
-            android:onClick="onTestBtnClicked" />
+            android:layout_margin="10dp"
+            android:onClick="onTestBtnClicked"
+            android:background="@drawable/greenbutton_style" />
 
         <Button
             android:layout_width="wrap_content"
@@ -83,7 +98,9 @@
             android:text="@string/blue_hint"
             android:id="@+id/blueButton"
             android:layout_gravity="center_horizontal"
-            android:onClick="onTestBtnClicked" />
+            android:layout_margin="10dp"
+            android:onClick="onTestBtnClicked"
+            android:background="@drawable/bluebutton_style" />
     </LinearLayout>
 
 </RelativeLayout>
