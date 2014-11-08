@@ -55,7 +55,7 @@
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:id="@+id/"
+        android:id="@+id/LinearButtons"
         android:layout_marginTop="144dp"
         android:layout_alignTop="@+id/RelativeHeader"
         android:layout_alignParentLeft="true"
@@ -66,21 +66,24 @@
             android:layout_height="wrap_content"
             android:text="@string/red_hint"
             android:id="@+id/redButton"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:onClick="onTestBtnClicked" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/green_hint"
             android:id="@+id/greenButton"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:onClick="onTestBtnClicked" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/blue_hint"
             android:id="@+id/blueButton"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:onClick="onTestBtnClicked" />
     </LinearLayout>
 
 </RelativeLayout>
