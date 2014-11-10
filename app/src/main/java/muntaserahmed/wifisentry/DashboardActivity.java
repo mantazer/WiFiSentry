@@ -241,7 +241,7 @@ public class DashboardActivity extends Activity {
 
         try {
             lightObject.put("lightId", 1);
-            lightObject.put("intensity", 0);
+            lightObject.put("intensity", 1);
             lightObject.put("red", 46);
             lightObject.put("green", 204);
             lightObject.put("blue", 113);
