@@ -12,6 +12,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -53,7 +55,18 @@ public class DashboardActivity extends Activity {
 
         scanListView = (ListView) findViewById(R.id.scanListView);
         wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+
+        scanListView.setBackgroundColor(getResources().getColor(R.color.greensea));
         refresh();
+
+        scanListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                view.setSelected(true);
+                CustomScanResult item = (CustomScanResult) adapterView.getItemAtPosition(i);
+                Toast.makeText(getApplicationContext(), item.SSID, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -125,7 +138,7 @@ public class DashboardActivity extends Activity {
 
         arrayAdapter = new ArrayAdapter<CustomScanResult>(
                 this,
-                android.R.layout.simple_list_item_1,
+                R.layout.row,
                 scanResults
         );
         scanListView.setAdapter(arrayAdapter);
