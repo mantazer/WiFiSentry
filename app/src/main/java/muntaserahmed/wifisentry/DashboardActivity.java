@@ -4,8 +4,8 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -14,6 +14,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import com.loopj.android.http.JsonHttpResponseHandler;
+
+import org.apache.http.Header;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,16 +29,22 @@ import java.util.HashSet;
 
 public class DashboardActivity extends Activity {
 
-
     ActionBar actionBar;
     ListView scanListView;
 
     WifiManager wifiManager;
+    ConnectivityManager connManager;
+    NetworkInfo netInfo;
+
     ArrayList<CustomScanResult> scanResults;
+    ArrayAdapter<CustomScanResult> arrayAdapter;
 
     SortLevel sortByLevel = new SortLevel();
 
-    ArrayAdapter<CustomScanResult> arrayAdapter;
+    final String ipApiUrl = "http://ip-api.com/json/";
+    final String icanhazipUrl = "http://icanhazip.com/";
+
+    String ipAddress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +54,6 @@ public class DashboardActivity extends Activity {
         scanListView = (ListView) findViewById(R.id.scanListView);
         wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
         refresh();
-
     }
 
     @Override
@@ -67,6 +79,9 @@ public class DashboardActivity extends Activity {
         }
         else if (id == R.id.action_refresh) {
             refresh();
+        }
+        else if (id == R.id.action_place) {
+            getLocation();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -114,6 +129,53 @@ public class DashboardActivity extends Activity {
                 scanResults
         );
         scanListView.setAdapter(arrayAdapter);
+    }
+
+    public void getLocation() {
+        connManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        netInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+//        if (!netInfo.isConnected()) {
+//            Toast.makeText(getApplicationContext(), "You are not connected!", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+
+//        Toast.makeText(getApplicationContext(), "Connected!", Toast.LENGTH_SHORT).show();
+
+        setIp();
+        String urlWithParam = ipApiUrl + getIp();
+
+        RestClient.get(urlWithParam, null, new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+
+                try {
+                    String status = response.getString("status");
+                    String lat = response.getString("lat");
+                    String lon = response.getString("lon");
+                    Toast.makeText(getApplicationContext(), lat + ", " + lon, Toast.LENGTH_SHORT).show();
+                } catch (JSONException e) {
+                    Log.d("JSONException", "Failed to parse");
+                }
+
+            }
+
+        });
+
+    }
+
+    public void setIp() {
+        RestClient.get(icanhazipUrl, null, new JsonHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                ipAddress = responseString;
+            }
+        });
+    }
+
+    public String getIp() {
+        return ipAddress;
     }
 
 }
