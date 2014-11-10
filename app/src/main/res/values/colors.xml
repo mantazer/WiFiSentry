@@ -4,4 +4,5 @@
     <item name="turquoise" type="color">#1abc9c</item>
     <item name="greensea" type="color">#16a085</item>
     <item name="whitesmoke" type="color">#f6f6ef</item>
+    <item name="white" type="color">#ffffff</item>
 </resources>
