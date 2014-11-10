@@ -93,7 +93,7 @@ public class ServerActivity extends Activity {
         JSONObject lightObject = new JSONObject();
 
         lightObject.put("lightId", 1);
-        lightObject.put("intensity", 0);
+        lightObject.put("intensity", 1);
 
         switch (v.getId()) {
             case R.id.redButton:
