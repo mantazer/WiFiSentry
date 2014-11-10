@@ -2,5 +2,6 @@
 <resources>
     <item name="clouds" type="color">#ecf0f1</item>
     <item name="turquoise" type="color">#1abc9c</item>
+    <item name="greensea" type="color">#16a085</item>
     <item name="whitesmoke" type="color">#f6f6ef</item>
 </resources>
