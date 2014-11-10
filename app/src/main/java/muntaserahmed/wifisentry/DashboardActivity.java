@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.ScanResult;
@@ -21,15 +22,22 @@ import android.widget.Toast;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.message.BasicHeader;
+import org.apache.http.protocol.HTTP;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 
 
 public class DashboardActivity extends Activity {
+
+    SharedPreferences preferences;
 
     ActionBar actionBar;
     ListView scanListView;
@@ -53,6 +61,9 @@ public class DashboardActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
+        preferences = getSharedPreferences(ServerActivity.SERVER_PREFERENCES, MODE_PRIVATE);
+        final String serverAddress = preferences.getString("serverIp", null);
+
         scanListView = (ListView) findViewById(R.id.scanListView);
         wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 
@@ -64,7 +75,39 @@ public class DashboardActivity extends Activity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 view.setSelected(true);
                 CustomScanResult item = (CustomScanResult) adapterView.getItemAtPosition(i);
-                Toast.makeText(getApplicationContext(), item.SSID, Toast.LENGTH_SHORT).show();
+                int level = item.level;
+
+                if (serverAddress != null) {
+
+                    JSONObject requestObj = constructJSONObject(level);
+
+                    try {
+                        StringEntity jsonEntity = new StringEntity(requestObj.toString());
+                        jsonEntity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+
+                        RestClient.post(getApplicationContext(), serverAddress, "rpi", jsonEntity, "application/json", new JsonHttpResponseHandler() {
+                            @Override
+                            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                                Toast.makeText(getApplicationContext(), "JSONObject", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                                Toast.makeText(getApplicationContext(), "JSONArray", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                        Toast.makeText(getApplicationContext(), "Sent", Toast.LENGTH_SHORT).show();
+
+                    } catch (UnsupportedEncodingException e) {
+                        Log.d("EXCEPTION:", "ENCODING");
+                    }
+
+                } else {
+                    Toast.makeText(getApplicationContext(), "Add a server first", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
             }
         });
     }
@@ -189,6 +232,28 @@ public class DashboardActivity extends Activity {
 
     public String getIp() {
         return ipAddress;
+    }
+
+    public JSONObject constructJSONObject(int level) {
+        JSONObject mainObj = new JSONObject();
+        JSONArray lightArray = new JSONArray();
+        JSONObject lightObject = new JSONObject();
+
+        try {
+            lightObject.put("lightId", 1);
+            lightObject.put("intensity", 0);
+            lightObject.put("red", 46);
+            lightObject.put("green", 204);
+            lightObject.put("blue", 113);
+
+            lightArray.put(lightObject);
+            mainObj.put("lights", lightArray);
+            mainObj.put("propagate", true);
+        } catch (JSONException e) {
+            Log.d("EXCEPTION: ", "JSONException constructJSONObject");
+        }
+
+        return mainObj;
     }
 
 }
