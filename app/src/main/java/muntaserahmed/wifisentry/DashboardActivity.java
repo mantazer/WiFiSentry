@@ -235,18 +235,29 @@ public class DashboardActivity extends Activity {
     }
 
     public JSONObject constructJSONObject(int level) {
+        double normalizedLevel = (double) (level * -1); // Make positive
+        int percentLevel = (int)(normalizedLevel * 0.32) + 1; // 1% of light is 0.32
+
         JSONObject mainObj = new JSONObject();
         JSONArray lightArray = new JSONArray();
         JSONObject lightObject = new JSONObject();
+        JSONObject offLightObject = new JSONObject();
 
         try {
-            lightObject.put("lightId", 1);
+            lightObject.put("lightId", 1); // Make beginning light up
             lightObject.put("intensity", 1);
             lightObject.put("red", 46);
             lightObject.put("green", 204);
             lightObject.put("blue", 113);
 
+            offLightObject.put("lightId", percentLevel); // Turn off the rest where it should stop
+            offLightObject.put("intensity", 0);
+            offLightObject.put("red", 46);
+            offLightObject.put("green", 204);
+            offLightObject.put("blue", 113);
+
             lightArray.put(lightObject);
+            lightArray.put(offLightObject);
             mainObj.put("lights", lightArray);
             mainObj.put("propagate", true);
         } catch (JSONException e) {
