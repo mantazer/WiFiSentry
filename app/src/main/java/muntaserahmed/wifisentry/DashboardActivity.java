@@ -160,7 +160,8 @@ public class DashboardActivity extends Activity {
         ArrayList<CustomScanResult> customScanResults = new ArrayList<CustomScanResult>();
 
         for (ScanResult sr : scanResults) {
-            CustomScanResult csr = new CustomScanResult(sr.SSID, sr.level, normalizeLevel(sr.level));
+            int normalizedLevel = convertRange(calcStopLight(sr.level));
+            CustomScanResult csr = new CustomScanResult(sr.SSID, sr.level, normalizedLevel);
             if (!csr.SSID.equals("")) {
                 customScanResults.add(csr);
             }
@@ -234,14 +235,19 @@ public class DashboardActivity extends Activity {
         return ipAddress;
     }
 
-    public int normalizeLevel(int level) {
+    public int calcStopLight(int level) {
         double inverseLevel = (double) (level * -1); // Make positive
         int percentLevel = (int) (inverseLevel * 0.32) + 1; // 1% of light is 0.32
-        return 100 - percentLevel;
+        return 32 - percentLevel;
+    }
+
+    public int convertRange(int lightId) {
+        int newVal = (((lightId - 0) * (100 - 0)) / (32 - 0)) + 0;
+        return newVal;
     }
 
     public JSONObject constructJSONObject(int level) {
-        int percentLevel = normalizeLevel(level);
+        int stopLight = calcStopLight(level);
 
         JSONObject mainObj = new JSONObject();
         JSONArray lightArray = new JSONArray();
@@ -255,7 +261,7 @@ public class DashboardActivity extends Activity {
             lightObject.put("green", 204);
             lightObject.put("blue", 113);
 
-            offLightObject.put("lightId", percentLevel); // Turn off the rest where it should stop
+            offLightObject.put("lightId", stopLight); // Turn off the rest where it should stop
             offLightObject.put("intensity", 0);
             offLightObject.put("red", 46);
             offLightObject.put("green", 204);
