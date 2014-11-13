@@ -5,10 +5,18 @@ public class CustomScanResult {
 
     public String SSID;
     public int level;
+    public int normalizedLevel;
 
     public CustomScanResult() {
         this.SSID = null;
         this.level = 0;
+        this.normalizedLevel = 0;
+    }
+
+    public CustomScanResult(String SSID, int level, int normalizedLevel) {
+        this.SSID = SSID;
+        this.level = level;
+        this.normalizedLevel = normalizedLevel;
     }
 
     @Override
@@ -28,13 +36,10 @@ public class CustomScanResult {
         return SSID != null ? SSID.hashCode() : 0;
     }
 
-    public CustomScanResult(String SSID, int level) {
-        this.SSID = SSID;
-        this.level = level;
-    }
+
 
     public String toString() {
-        return this.SSID + ": " + this.level;
+        return this.SSID + ": " + this.normalizedLevel;
     }
 
 }
