@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Build;
@@ -34,6 +35,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Locale;
 
 
 public class DashboardActivity extends Activity {
@@ -210,9 +212,15 @@ public class DashboardActivity extends Activity {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 try {
                     String status = response.getString("status");
-                    String lat = response.getString("lat");
-                    String lon = response.getString("lon");
-                    Toast.makeText(getApplicationContext(), lat + ", " + lon, Toast.LENGTH_SHORT).show();
+//                    double lat = Double.parseDouble(response.getString("lat"));
+//                    double lon = Double.parseDouble(response.getString("lon"));
+//                    Toast.makeText(getApplicationContext(), lat + ", " + lon, Toast.LENGTH_SHORT).show();
+                    double lat = -38.889497;
+                    double lon = -77.035322;
+                    String mTitle = "WiFi Location";
+                    String geoUri = "http://maps.google.com/maps?q=loc:" + lat + "," + lon + " (" + mTitle + ")";
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(geoUri));
+                    startActivity(intent);
                 } catch (JSONException e) {
                     Log.d("JSONException", "Failed to parse");
                 }
