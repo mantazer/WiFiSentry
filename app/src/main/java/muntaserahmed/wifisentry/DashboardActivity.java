@@ -212,11 +212,8 @@ public class DashboardActivity extends Activity {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 try {
                     String status = response.getString("status");
-//                    double lat = Double.parseDouble(response.getString("lat"));
-//                    double lon = Double.parseDouble(response.getString("lon"));
-//                    Toast.makeText(getApplicationContext(), lat + ", " + lon, Toast.LENGTH_SHORT).show();
-                    double lat = -38.889497;
-                    double lon = -77.035322;
+                    double lat = Double.parseDouble(response.getString("lat"));
+                    double lon = Double.parseDouble(response.getString("lon"));
                     String mTitle = "WiFi Location";
                     String geoUri = "http://maps.google.com/maps?q=loc:" + lat + "," + lon + " (" + mTitle + ")";
                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(geoUri));
