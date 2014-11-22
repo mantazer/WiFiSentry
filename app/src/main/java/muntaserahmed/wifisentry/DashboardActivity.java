@@ -129,7 +129,8 @@ public class DashboardActivity extends Activity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_cardboard) {
-            Toast.makeText(getApplicationContext(), getDeviceName(), Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, VRActivity.class);
+            startActivity(intent);
             return true;
         }
         else if (id == R.id.action_server) {
