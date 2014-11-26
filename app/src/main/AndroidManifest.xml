@@ -7,6 +7,12 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
+    <uses-permission android:name="android.permission.NFC" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <uses-sdk android:minSdkVersion="16"/>
+    <uses-feature android:glEsVersion="0x00020000" android:required="true" />
+
 
     <application
         android:allowBackup="true"
@@ -28,6 +34,14 @@
             android:label="@string/title_activity_server"
             android:parentActivityName=".DashboardActivity"
             android:screenOrientation="portrait" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="muntaserahmed.wifisentry.DashboardActivity" />
+        </activity>
+        <activity
+            android:name=".VRActivity"
+            android:parentActivityName=".DashboardActivity"
+            android:screenOrientation="landscape" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="muntaserahmed.wifisentry.DashboardActivity" />
