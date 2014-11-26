@@ -1,3 +1,5 @@
+// PRE-CARDBOARD
+
 package muntaserahmed.wifisentry;
 
 import android.app.ActionBar;
