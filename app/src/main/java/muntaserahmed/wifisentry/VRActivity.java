@@ -63,6 +63,10 @@ public class VRActivity extends CardboardActivity implements CardboardView.Stere
     private FloatBuffer mCubeFoundColors;
     private FloatBuffer mCubeNormals;
 
+    private FloatBuffer mCubeStrong;
+    private FloatBuffer mCubeModerate;
+    private FloatBuffer mCubeWeak;
+
     private int mGlProgram;
     private int mPositionParam;
     private int mNormalParam;
@@ -203,6 +207,24 @@ public class VRActivity extends CardboardActivity implements CardboardView.Stere
         mCubeNormals = bbNormals.asFloatBuffer();
         mCubeNormals.put(DATA.CUBE_NORMALS);
         mCubeNormals.position(0);
+
+        ByteBuffer bbStrong = ByteBuffer.allocateDirect(DATA.CUBE_COLORS_STRONG.length * 4);
+        bbStrong.order(ByteOrder.nativeOrder());
+        mCubeStrong = bbStrong.asFloatBuffer();
+        mCubeStrong.put(DATA.CUBE_COLORS_STRONG);
+        mCubeStrong.position(0);
+
+        ByteBuffer bbModerate = ByteBuffer.allocateDirect(DATA.CUBE_COLORS_MODERATE.length * 4);
+        bbModerate.order(ByteOrder.nativeOrder());
+        mCubeModerate = bbModerate.asFloatBuffer();
+        mCubeModerate.put(DATA.CUBE_COLORS_MODERATE);
+        mCubeModerate.position(0);
+
+        ByteBuffer bbWeak = ByteBuffer.allocateDirect(DATA.CUBE_COLORS_WEAK.length * 4);
+        bbWeak.order(ByteOrder.nativeOrder());
+        mCubeWeak = bbWeak.asFloatBuffer();
+        mCubeWeak.put(DATA.CUBE_COLORS_WEAK);
+        mCubeWeak.position(0);
 
         // make a floor
         ByteBuffer bbFloorVertices = ByteBuffer.allocateDirect(DATA.FLOOR_COORDS.length * 4);
@@ -354,6 +376,24 @@ public class VRActivity extends CardboardActivity implements CardboardView.Stere
         // Set the ModelViewProjection matrix in the shader.
         GLES20.glUniformMatrix4fv(mModelViewProjectionParam, 1, false, mModelViewProjection, 0);
 
+        int strongestLevel;
+        FloatBuffer mCubeDynamic;
+
+        strongestLevel = getIntent().getIntExtra("strongestLevel", 0);
+
+        if (strongestLevel < 34) {
+            mCubeDynamic = mCubeWeak;
+        }
+        else if (strongestLevel < 67) {
+            mCubeDynamic = mCubeModerate;
+        }
+        else if (strongestLevel < 101) {
+            mCubeDynamic = mCubeStrong;
+        }
+        else {
+            mCubeDynamic = mCubeColors;
+        }
+
         // Set the normal positions of the cube, again for shading
         GLES20.glVertexAttribPointer(mNormalParam, 3, GLES20.GL_FLOAT,
                 false, 0, mCubeNormals);
@@ -365,7 +405,7 @@ public class VRActivity extends CardboardActivity implements CardboardView.Stere
                     0, mCubeFoundColors);
         } else {
             GLES20.glVertexAttribPointer(mColorParam, 4, GLES20.GL_FLOAT, false,
-                    0, mCubeColors);
+                    0, mCubeDynamic);
         }
         GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, 36);
         checkGLError("Drawing cube");
