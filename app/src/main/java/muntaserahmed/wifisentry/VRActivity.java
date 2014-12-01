@@ -95,7 +95,6 @@ public class VRActivity extends CardboardActivity implements CardboardView.Stere
     private Vibrator mVibrator;
 
     ArrayList<CustomScanResult> parcelList;
-    int randomIndex = 0;
 
     private CardboardOverlayView mOverlayView;
 
@@ -383,26 +382,26 @@ public class VRActivity extends CardboardActivity implements CardboardView.Stere
         // Set the ModelViewProjection matrix in the shader.
         GLES20.glUniformMatrix4fv(mModelViewProjectionParam, 1, false, mModelViewProjection, 0);
 
-        Random r = new Random();
-        randomIndex = r.nextInt(parcelList.size());
-
-        int randomLevel;
-        FloatBuffer mCubeDynamic;
-
-        randomLevel = parcelList.get(randomIndex).normalizedLevel;
-
-        if (randomLevel < 34) {
-            mCubeDynamic = mCubeWeak;
-        }
-        else if (randomLevel < 67) {
-            mCubeDynamic = mCubeModerate;
-        }
-        else if (randomLevel < 101) {
-            mCubeDynamic = mCubeStrong;
-        }
-        else {
-            mCubeDynamic = mCubeColors;
-        }
+//        Random r = new Random();
+//        randomIndex = r.nextInt(parcelList.size());
+//
+//        int strongestLevel;
+//        FloatBuffer mCubeDynamic;
+//
+//        strongestLevel = parcelList.get(0).normalizedLevel;
+//
+//        if (strongestLevel < 34) {
+//            mCubeDynamic = mCubeWeak;
+//        }
+//        else if (strongestLevel < 67) {
+//            mCubeDynamic = mCubeModerate;
+//        }
+//        else if (strongestLevel < 101) {
+//            mCubeDynamic = mCubeStrong;
+//        }
+//        else {
+//            mCubeDynamic = mCubeColors;
+//        }
 
         // Set the normal positions of the cube, again for shading
         GLES20.glVertexAttribPointer(mNormalParam, 3, GLES20.GL_FLOAT,
@@ -415,7 +414,7 @@ public class VRActivity extends CardboardActivity implements CardboardView.Stere
                     0, mCubeFoundColors);
         } else {
             GLES20.glVertexAttribPointer(mColorParam, 4, GLES20.GL_FLOAT, false,
-                    0, mCubeDynamic);
+                    0, mCubeColors);
         }
         GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, 36);
         checkGLError("Drawing cube");
@@ -451,15 +450,17 @@ public class VRActivity extends CardboardActivity implements CardboardView.Stere
     public void onCardboardTrigger() {
         Log.i(TAG, "onCardboardTrigger");
 
-//        String strongestSSID = getIntent().getStringExtra("strongestSSID");
+        Random r = new Random();
+        int randomIndex = r.nextInt(parcelList.size());
         String randomSSID = parcelList.get(randomIndex).SSID;
+        int randomLevel = parcelList.get(randomIndex).normalizedLevel;
 
         if (isLookingAtObject()) {
             mScore++;
-            mOverlayView.show3DToast("Found " + randomSSID + "! Look around for another one.\nScore = " + mScore);
+            mOverlayView.show3DToast("Found " + randomSSID + ", Strength: " + randomLevel + "!\nScore = " + mScore);
             hideObject();
         } else {
-            mOverlayView.show3DToast("Look around to find the access point!");
+            mOverlayView.show3DToast("Look around to find the access points!");
         }
         // Always give user feedback
         mVibrator.vibrate(50);
