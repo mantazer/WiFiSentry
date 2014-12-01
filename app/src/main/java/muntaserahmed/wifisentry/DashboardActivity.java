@@ -134,6 +134,7 @@ public class DashboardActivity extends Activity {
             Intent intent = new Intent(this, VRActivity.class);
             intent.putExtra("strongestLevel", strongestLevel);
             intent.putExtra("strongestSSID", strongestSSID);
+            intent.putParcelableArrayListExtra("parcelList", scanResults);
             startActivity(intent);
             return true;
         }

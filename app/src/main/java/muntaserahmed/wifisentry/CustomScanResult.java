@@ -1,7 +1,10 @@
 package muntaserahmed.wifisentry;
 
 
-public class CustomScanResult {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class CustomScanResult implements Parcelable {
 
     public String SSID;
     public int level;
@@ -41,5 +44,32 @@ public class CustomScanResult {
     public String toString() {
         return this.SSID + ": " + this.normalizedLevel;
     }
+
+    public CustomScanResult(Parcel in) {
+        SSID = in.readString();
+        level = in.readInt();
+        normalizedLevel = in.readInt();
+    }
+
+    public int describeContents() {
+        return 0;
+    }
+
+    public void writeToParcel(Parcel out, int flags) {
+        out.writeString(SSID);
+        out.writeInt(level);
+        out.writeInt(normalizedLevel);
+    }
+
+    public static final Parcelable.Creator<CustomScanResult> CREATOR
+            = new Parcelable.Creator<CustomScanResult>() {
+        public CustomScanResult createFromParcel(Parcel in) {
+            return new CustomScanResult(in);
+        }
+
+        public CustomScanResult[] newArray(int size) {
+            return new CustomScanResult[size];
+        }
+    };
 
 }
