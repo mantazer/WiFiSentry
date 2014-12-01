@@ -441,12 +441,14 @@ public class VRActivity extends CardboardActivity implements CardboardView.Stere
     public void onCardboardTrigger() {
         Log.i(TAG, "onCardboardTrigger");
 
+        String strongestSSID = getIntent().getStringExtra("strongestSSID");
+
         if (isLookingAtObject()) {
             mScore++;
-            mOverlayView.show3DToast("Found it! Look around for another one.\nScore = " + mScore);
+            mOverlayView.show3DToast("Found " + strongestSSID + "! Look around for another one.\nScore = " + mScore);
             hideObject();
         } else {
-            mOverlayView.show3DToast("Look around to find the object!");
+            mOverlayView.show3DToast("Look around to find the access point!");
         }
         // Always give user feedback
         mVibrator.vibrate(50);

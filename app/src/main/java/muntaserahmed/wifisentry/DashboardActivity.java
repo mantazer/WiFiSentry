@@ -129,9 +129,11 @@ public class DashboardActivity extends Activity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_cardboard) {
-            int strongestLevel = convertRange(calcStopLight(getStrongest()));
+            int strongestLevel = convertRange(calcStopLight(getStrongestLevel()));
+            String strongestSSID = getStrongestSSID();
             Intent intent = new Intent(this, VRActivity.class);
             intent.putExtra("strongestLevel", strongestLevel);
+            intent.putExtra("strongestSSID", strongestSSID);
             startActivity(intent);
             return true;
         }
@@ -195,9 +197,11 @@ public class DashboardActivity extends Activity {
         scanListView.setAdapter(arrayAdapter);
     }
 
-    public int getStrongest() {
+    public int getStrongestLevel() {
         return scanResults.get(0).level;
     }
+
+    public String getStrongestSSID() { return scanResults.get(0).SSID; }
 
     public void getLocation() {
         connManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
