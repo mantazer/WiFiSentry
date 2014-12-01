@@ -32,6 +32,8 @@ import java.io.InputStreamReader;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * A Cardboard sample application.
@@ -91,6 +93,9 @@ public class VRActivity extends CardboardActivity implements CardboardView.Stere
     private float mFloorDepth = 20f;
 
     private Vibrator mVibrator;
+
+    ArrayList<CustomScanResult> parcelList;
+    int randomIndex = 0;
 
     private CardboardOverlayView mOverlayView;
 
@@ -162,6 +167,8 @@ public class VRActivity extends CardboardActivity implements CardboardView.Stere
 
         mOverlayView = (CardboardOverlayView) findViewById(R.id.overlay);
         mOverlayView.show3DToast("Pull the magnet when you find an object.");
+
+        parcelList = getIntent().getParcelableArrayListExtra("parcelList");
     }
 
     @Override
@@ -376,18 +383,21 @@ public class VRActivity extends CardboardActivity implements CardboardView.Stere
         // Set the ModelViewProjection matrix in the shader.
         GLES20.glUniformMatrix4fv(mModelViewProjectionParam, 1, false, mModelViewProjection, 0);
 
-        int strongestLevel;
+        Random r = new Random();
+        randomIndex = r.nextInt(parcelList.size());
+
+        int randomLevel;
         FloatBuffer mCubeDynamic;
 
-        strongestLevel = getIntent().getIntExtra("strongestLevel", 0);
+        randomLevel = parcelList.get(randomIndex).normalizedLevel;
 
-        if (strongestLevel < 34) {
+        if (randomLevel < 34) {
             mCubeDynamic = mCubeWeak;
         }
-        else if (strongestLevel < 67) {
+        else if (randomLevel < 67) {
             mCubeDynamic = mCubeModerate;
         }
-        else if (strongestLevel < 101) {
+        else if (randomLevel < 101) {
             mCubeDynamic = mCubeStrong;
         }
         else {
@@ -441,11 +451,12 @@ public class VRActivity extends CardboardActivity implements CardboardView.Stere
     public void onCardboardTrigger() {
         Log.i(TAG, "onCardboardTrigger");
 
-        String strongestSSID = getIntent().getStringExtra("strongestSSID");
+//        String strongestSSID = getIntent().getStringExtra("strongestSSID");
+        String randomSSID = parcelList.get(randomIndex).SSID;
 
         if (isLookingAtObject()) {
             mScore++;
-            mOverlayView.show3DToast("Found " + strongestSSID + "! Look around for another one.\nScore = " + mScore);
+            mOverlayView.show3DToast("Found " + randomSSID + "! Look around for another one.\nScore = " + mScore);
             hideObject();
         } else {
             mOverlayView.show3DToast("Look around to find the access point!");
